@@ -1,0 +1,293 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "3439f0b9-681a-4aae-a2df-04f5021a093f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#pip install beautifulsoup4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "7277c2f4-2c57-46fd-ab60-9b6be5fc44ce",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#pip install beautifulsoup4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "c5722ae3-d6a2-42a8-ade5-fe84a5d56b64",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import requests"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "8505eade-56cc-4d96-b04e-8f88bfd523f3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from bs4 import BeautifulSoup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "20779c5c-338d-4b99-8c30-af31312554e9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "4269172c-2c28-4f3a-bf0b-2bc39bc5f186",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Target URL\n",
+    "url=\"http://books.toscrape.com\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "8f1996dc-01ef-4c6f-90ac-0e0a31a6c3ee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Send a GET request\n",
+    "response=requests.get(url)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "dde75c7d-c706-4e4d-a1db-e50ad7f9e73e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Parse the HTML\n",
+    "soup=BeautifulSoup(response.text,\"html.parser\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "4b2f5365-6195-412f-b324-ca5bae4bf3dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Find all book containers\n",
+    "books=soup.find_all('article',class_='product_pod')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "7ba33561-52f0-4abf-8b45-47b3fd467bfe",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Title:A Light in the Attic\n",
+      "Price:Â£51.77\n",
+      "\n",
+      "Title:Tipping the Velvet\n",
+      "Price:Â£53.74\n",
+      "\n",
+      "Title:Soumission\n",
+      "Price:Â£50.10\n",
+      "\n",
+      "Title:Sharp Objects\n",
+      "Price:Â£47.82\n",
+      "\n",
+      "Title:Sapiens: A Brief History of Humankind\n",
+      "Price:Â£54.23\n",
+      "\n",
+      "Title:The Requiem Red\n",
+      "Price:Â£22.65\n",
+      "\n",
+      "Title:The Dirty Little Secrets of Getting Your Dream Job\n",
+      "Price:Â£33.34\n",
+      "\n",
+      "Title:The Coming Woman: A Novel Based on the Life of the Infamous Feminist, Victoria Woodhull\n",
+      "Price:Â£17.93\n",
+      "\n",
+      "Title:The Boys in the Boat: Nine Americans and Their Epic Quest for Gold at the 1936 Berlin Olympics\n",
+      "Price:Â£22.60\n",
+      "\n",
+      "Title:The Black Maria\n",
+      "Price:Â£52.15\n",
+      "\n",
+      "Title:Starving Hearts (Triangular Trade Trilogy, #1)\n",
+      "Price:Â£13.99\n",
+      "\n",
+      "Title:Shakespeare's Sonnets\n",
+      "Price:Â£20.66\n",
+      "\n",
+      "Title:Set Me Free\n",
+      "Price:Â£17.46\n",
+      "\n",
+      "Title:Scott Pilgrim's Precious Little Life (Scott Pilgrim #1)\n",
+      "Price:Â£52.29\n",
+      "\n",
+      "Title:Rip it Up and Start Again\n",
+      "Price:Â£35.02\n",
+      "\n",
+      "Title:Our Band Could Be Your Life: Scenes from the American Indie Underground, 1981-1991\n",
+      "Price:Â£57.25\n",
+      "\n",
+      "Title:Olio\n",
+      "Price:Â£23.88\n",
+      "\n",
+      "Title:Mesaerion: The Best Science Fiction Stories 1800-1849\n",
+      "Price:Â£37.59\n",
+      "\n",
+      "Title:Libertarianism for Beginners\n",
+      "Price:Â£51.33\n",
+      "\n",
+      "Title:It's Only the Himalayas\n",
+      "Price:Â£45.17\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "for book in books:\n",
+    "    title=book.h3.a['title']\n",
+    "    price=book.find('p',class_='price_color').text\n",
+    "    print(f\"Title:{title}\\nPrice:{price}\\n\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "f2dc1422-2a27-4cae-b5ab-693bbeefd4a0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "                                              0\n",
+      "0                                            \\n\n",
+      "1                                [\\n, [[]], \\n]\n",
+      "2                                            \\n\n",
+      "3  [\\n, [], \\n, [], \\n, [], \\n, [], \\n, [], \\n]\n",
+      "4                                            \\n\n"
+     ]
+    }
+   ],
+   "source": [
+    "df=pd.DataFrame(book)\n",
+    "print(df.head())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "96571882-de87-427d-8c36-6b047bca379e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Find all book container\n",
+    "book_data=[]\n",
+    "books=soup.find_all('article',class_='product_pod')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "95702097-2654-4a1f-9f42-e98b4adf0d7d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Title:A Light in the Attic\n",
+      "Price:Â£51.77\n",
+      "\n"
+     ]
+    },
+    {
+     "ename": "NameError",
+     "evalue": "name 'Price' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "Cell \u001b[1;32mIn[35], line 5\u001b[0m\n\u001b[0;32m      3\u001b[0m price\u001b[38;5;241m=\u001b[39mbook\u001b[38;5;241m.\u001b[39mfind(\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mp\u001b[39m\u001b[38;5;124m'\u001b[39m,class_\u001b[38;5;241m=\u001b[39m\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mprice_color\u001b[39m\u001b[38;5;124m'\u001b[39m)\u001b[38;5;241m.\u001b[39mtext\n\u001b[0;32m      4\u001b[0m \u001b[38;5;28mprint\u001b[39m(\u001b[38;5;124mf\u001b[39m\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mTitle:\u001b[39m\u001b[38;5;132;01m{\u001b[39;00mtitle\u001b[38;5;132;01m}\u001b[39;00m\u001b[38;5;130;01m\\n\u001b[39;00m\u001b[38;5;124mPrice:\u001b[39m\u001b[38;5;132;01m{\u001b[39;00mprice\u001b[38;5;132;01m}\u001b[39;00m\u001b[38;5;130;01m\\n\u001b[39;00m\u001b[38;5;124m\"\u001b[39m)\n\u001b[1;32m----> 5\u001b[0m book_data\u001b[38;5;241m.\u001b[39mappend({\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mTitle\u001b[39m\u001b[38;5;124m\"\u001b[39m:title,\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mPrice\u001b[39m\u001b[38;5;124m\"\u001b[39m:Price})\n",
+      "\u001b[1;31mNameError\u001b[0m: name 'Price' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "for book in books:\n",
+    "    title=book.h3.a['title']\n",
+    "    price=book.find('p',class_='price_color').text\n",
+    "    print(f\"Title:{title}\\nPrice:{price}\\n\")\n",
+    "    book_data.append({\"Title\":title,\"Price\":price})\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ee88c0b1-6b44-4da4-918d-4794a0069ef6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:base] *",
+   "language": "python",
+   "name": "conda-base-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
